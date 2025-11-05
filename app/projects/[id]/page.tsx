@@ -1,192 +1,160 @@
-"use client";
+"use client"
 
-import { projects } from "@/data";
-import { useParams } from "next/navigation";
-import Link from "next/link";
-import { FaArrowLeft, FaLocationArrow } from "react-icons/fa6";
-import {
-  useEffect,
-  useMemo,
-  useState,
-  useCallback,
-} from "react";
-import { Spotlight } from "@/components/ui/Spotlight";
-import MagicButton from "@/components/MagicButton";
-import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect";
-import { AnimatePresence, motion } from "framer-motion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Markdown from "@/components/Markdown";
+import { projects } from "@/data"
+import { useParams } from "next/navigation"
+import Link from "next/link"
+import { FaArrowLeft, FaLocationArrow } from "react-icons/fa6"
+import { useEffect, useMemo, useState, useCallback } from "react"
+import { Spotlight } from "@/components/ui/Spotlight"
+import MagicButton from "@/components/MagicButton"
+import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect"
+import { AnimatePresence, motion } from "framer-motion"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import Markdown from "@/components/Markdown"
+import Image from "next/image";
 
-type Maybe<T> = T | undefined | null;
+type Maybe<T> = T | undefined | null
 
 function isImagePath(path: string) {
-  return /\.(png|jpe?g|webp|gif|svg)$/i.test(path);
+  return /\.(png|jpe?g|webp|gif|svg)$/i.test(path)
 }
 
 function parseYouTubeId(u: string): Maybe<string> {
   try {
-    const url = new URL(u);
-    if (url.hostname.includes("youtu.be")) return url.pathname.replace("/", "");
+    const url = new URL(u)
+    if (url.hostname.includes("youtu.be")) {
+      return url.pathname.replace("/", "")
+    }
     if (url.hostname.includes("youtube.com") || url.hostname.includes("youtube-nocookie.com")) {
-      if (url.pathname.startsWith("/watch")) return url.searchParams.get("v") || undefined;
-      if (url.pathname.startsWith("/shorts/")) return url.pathname.split("/")[2];
-      if (url.pathname.startsWith("/embed/")) return url.pathname.split("/")[2];
+      if (url.pathname.startsWith("/watch")) return url.searchParams.get("v") || undefined
+      if (url.pathname.startsWith("/shorts/")) return url.pathname.split("/")[2]
+      if (url.pathname.startsWith("/embed/")) return url.pathname.split("/")[2]
     }
   } catch {}
-  return undefined;
+  return undefined
 }
 
 function parseVimeoId(u: string): Maybe<string> {
   try {
-    const url = new URL(u);
+    const url = new URL(u)
     if (url.hostname.includes("vimeo.com")) {
-      const parts = url.pathname.split("/").filter(Boolean);
-      if (parts[0] === "video" && parts[1]) return parts[1];
-      if (parts[0]) return parts[0];
+      const parts = url.pathname.split("/").filter(Boolean)
+      if (parts[0] === "video" && parts[1]) return parts[1]
+      if (parts[0]) return parts[0]
     }
   } catch {}
-  return undefined;
+  return undefined
 }
 
 function toEmbedUrl(u: Maybe<string>): Maybe<{ src: string; provider: "youtube" | "vimeo" }> {
-  if (!u) return undefined;
-  const yt = parseYouTubeId(u);
-  if (yt) return { src: `https://www.youtube-nocookie.com/embed/${yt}`, provider: "youtube" };
-  const vm = parseVimeoId(u);
-  if (vm) return { src: `https://player.vimeo.com/video/${vm}`, provider: "vimeo" };
-  return undefined;
+  if (!u) return undefined
+  const yt = parseYouTubeId(u)
+  if (yt) return { src: `https://www.youtube-nocookie.com/embed/${yt}`, provider: "youtube" }
+  const vm = parseVimeoId(u)
+  if (vm) return { src: `https://player.vimeo.com/video/${vm}`, provider: "vimeo" }
+  return undefined
 }
 
 /**
  * Screenshots loader
- * - Accepts an array, a single image, or a folder path
- * - If folder, it calls /api/list-images
+ * - Accepts:
+ *   - array of URLs
+ *   - single image URL
+ *   - folder path like /projects-screenshots/2/d-1 (or /project-screenshots/..)
+ *   -> when folder, asks /api/list-images to enumerate files
  */
 function useScreenshots(source: Maybe<string | string[]>) {
-  const [shots, setShots] = useState<string[]>([]);
+  const [shots, setShots] = useState<string[]>([])
 
   useEffect(() => {
-    let cancelled = false;
+    let cancelled = false
 
     async function run() {
       if (!source) {
-        if (!cancelled) setShots([]);
-        return;
+        if (!cancelled) setShots([])
+        return
       }
 
       if (Array.isArray(source)) {
-        if (!cancelled) setShots(source.filter(Boolean));
-        return;
+        if (!cancelled) setShots(source.filter(Boolean))
+        return
       }
 
-      const s = source.trim();
+      const s = source.trim()
+
       if (isImagePath(s)) {
-        if (!cancelled) setShots([s]);
-        return;
+        if (!cancelled) setShots([s])
+        return
       }
 
-      const folder = s.startsWith("/") ? s : `/${s}`;
+      const folder = s.startsWith("/") ? s : `/${s}`
+
       try {
-        const res = await fetch(`/api/list-images?dir=${encodeURIComponent(folder)}`, { cache: "no-store" });
-        const data = (await res.json()) as { images?: string[] };
-        if (!cancelled) setShots((data.images || []).filter(Boolean));
+        const res = await fetch(`/api/list-images?dir=${encodeURIComponent(folder)}`, { cache: "no-store" })
+        const data = (await res.json()) as { images?: string[] }
+        if (!cancelled) setShots((data.images || []).filter(Boolean))
       } catch {
-        if (!cancelled) setShots([]);
+        if (!cancelled) setShots([])
       }
     }
 
-    run();
+    run()
     return () => {
-      cancelled = true;
-    };
-  }, [source]);
+      cancelled = true
+    }
+  }, [source])
 
-  return shots;
+  return shots
 }
 
 export default function ProjectCaseStudy() {
-  const params = useParams();
-  const projectId = Number.parseInt(params.id as string);
-  const project = projects.find((p) => p.id === projectId);
-
-  // state
-  const [currentScreenshot, setCurrentScreenshot] = useState(0);
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [selectedDashboard, setSelectedDashboard] = useState(0);
+  const params = useParams()
+  const projectId = Number.parseInt(params.id as string)
+  const project = projects.find((p) => p.id === projectId)
+  const [currentScreenshot, setCurrentScreenshot] = useState(0)
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [selectedDashboard, setSelectedDashboard] = useState(0)
 
   // fullscreen modal state
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalIndex, setModalIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalIndex, setModalIndex] = useState(0)
 
   const openModal = useCallback((idx: number) => {
-    setModalIndex(idx);
-    setIsModalOpen(true);
+    setModalIndex(idx)
+    setIsModalOpen(true)
+    // lock scroll
     if (typeof document !== "undefined") {
-      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden"
     }
-  }, []);
+  }, [])
 
   const closeModal = useCallback(() => {
-    setIsModalOpen(false);
+    setIsModalOpen(false)
     if (typeof document !== "undefined") {
-      document.documentElement.style.overflow = "";
+      document.documentElement.style.overflow = ""
     }
-  }, []);
+  }, [])
 
   const nextModal = useCallback(
     (len: number) => setModalIndex((i) => (i + 1) % len),
     []
-  );
+  )
   const prevModal = useCallback(
     (len: number) => setModalIndex((i) => (i - 1 + len) % len),
     []
-  );
+  )
 
-  // derive case study, dashboards, and media in a stable way
-  const caseStudy = useMemo(() => project?.caseStudy ?? {}, [project]);
-  const hasDashboards = useMemo(
-    () => Array.isArray((caseStudy as any).dashboards) && (caseStudy as any).dashboards.length > 0,
-    [caseStudy]
-  );
-  const currentDashboard = useMemo(
-    () => (hasDashboards ? (caseStudy as any).dashboards[selectedDashboard] : null),
-    [hasDashboards, caseStudy, selectedDashboard]
-  );
-
-  const demoVideoRaw: Maybe<string> = useMemo(() => {
-    if (!project) return undefined;
-    return (currentDashboard as any)?.demoVideo ?? (caseStudy as any).demoVideo;
-  }, [project, currentDashboard, caseStudy]);
-
-  const embed = useMemo(() => toEmbedUrl(demoVideoRaw), [demoVideoRaw]);
-
-  // Memoize screenshotsSource to avoid creating a fresh [] per render
-  const screenshotsSource: Maybe<string | string[]> = useMemo(() => {
-    if (!project) return undefined;
-    return (currentDashboard as any)?.screenshots ?? (caseStudy as any).screenshots ?? undefined;
-  }, [project, currentDashboard, caseStudy]);
-
-  const screenshots = useScreenshots(screenshotsSource);
-
-  // reset currentScreenshot when changing dashboard or source
   useEffect(() => {
-    setCurrentScreenshot(0);
-  }, [selectedDashboard, screenshotsSource]);
-
-  // modal keyboard controls
-  useEffect(() => {
-    if (!isModalOpen) return;
-
+    if (!isModalOpen) return
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") closeModal();
-      if (e.key === "ArrowRight") nextModal(screenshots.length || 1);
-      if (e.key === "ArrowLeft") prevModal(screenshots.length || 1);
+      if (e.key === "Escape") closeModal()
+      if (e.key === "ArrowRight") nextModal(screenshots.length || 1)
+      if (e.key === "ArrowLeft") prevModal(screenshots.length || 1)
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isModalOpen, closeModal, nextModal, prevModal, screenshots.length]);
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [isModalOpen, closeModal, nextModal, prevModal /* screenshots below */])
 
-  // safe early return after all hooks
   if (!project) {
     return (
       <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5 min-h-screen">
@@ -199,12 +167,32 @@ export default function ProjectCaseStudy() {
           </div>
         </div>
       </main>
-    );
+    )
   }
 
-  const hasDashboardsVal = hasDashboards;
-  const currentDashboardVal = currentDashboard;
-  const canShowModal = screenshots.length > 0;
+  const caseStudy = project.caseStudy || {}
+  const hasDashboards = Array.isArray(caseStudy.dashboards) && caseStudy.dashboards.length > 0
+  const currentDashboard = hasDashboards ? caseStudy.dashboards[selectedDashboard] : null
+
+  // Video
+  const demoVideoRaw: Maybe<string> =
+    (currentDashboard && (currentDashboard as any).demoVideo) ||
+    (caseStudy as any).demoVideo
+  const embed = useMemo(() => toEmbedUrl(demoVideoRaw), [demoVideoRaw])
+
+  // Screenshots source
+  const screenshotsSource: Maybe<string | string[]> =
+    (currentDashboard && (currentDashboard as any).screenshots) ||
+    (caseStudy as any).screenshots ||
+    []
+  const screenshots = useScreenshots(screenshotsSource)
+
+  useEffect(() => {
+    setCurrentScreenshot(0)
+  }, [selectedDashboard, screenshotsSource])
+
+  // modal guards
+  const canShowModal = screenshots.length > 0
 
   return (
     <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
@@ -225,7 +213,7 @@ export default function ProjectCaseStudy() {
       </div>
 
       <div className="max-w-7xl w-full relative z-10">
-        {/* Back */}
+        {/* Back button */}
         <div className="pt-20 pb-10">
           <Link
             href="/#projects"
@@ -238,6 +226,8 @@ export default function ProjectCaseStudy() {
 
         <div className="py-16 mb-8">
           <h1 className="heading lg:max-w-[80vw] text-balance">{project.title}</h1>
+
+          {/* description supports markdown */}
           {project.des ? (
             <Markdown className="md:mt-8 my-6 text-lg text-center">
               {project.des}
@@ -245,25 +235,24 @@ export default function ProjectCaseStudy() {
           ) : null}
         </div>
 
-        {/* Dashboards */}
-        {hasDashboardsVal && (
+        {/* Dashboards area */}
+        {hasDashboards && (
           <div className="py-12 mb-8">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 flex items-center gap-3">
-              <span className="w-1 h-8 bg-purple rounded-full" />
+              <span className="w-1 h-8 bg-purple rounded-full"></span>
               Dashboard Explorer
             </h2>
-
             <div className="flex flex-col lg:flex-row gap-6">
-              {/* Left list */}
+              {/* Left Sidebar */}
               <div className="lg:w-80 flex-shrink-0">
                 <ScrollArea className="h-auto lg:h-[600px] rounded-2xl border border-white/[0.1] bg-black-200/50 backdrop-blur-sm p-4">
                   <div className="space-y-3">
-                    {(caseStudy as any).dashboards.map((dashboard: any, index: number) => (
+                    {caseStudy.dashboards.map((dashboard: any, index: number) => (
                       <motion.button
                         key={index}
                         onClick={() => {
-                          setSelectedDashboard(index);
-                          setCurrentScreenshot(0);
+                          setSelectedDashboard(index)
+                          setCurrentScreenshot(0)
                         }}
                         whileHover={{ scale: 1.02, x: 4 }}
                         whileTap={{ scale: 0.98 }}
@@ -294,7 +283,7 @@ export default function ProjectCaseStudy() {
                 </ScrollArea>
               </div>
 
-              {/* Right content */}
+              {/* Right Content */}
               <div className="flex-1 space-y-6">
                 <motion.div
                   key={`title-${selectedDashboard}`}
@@ -303,15 +292,15 @@ export default function ProjectCaseStudy() {
                   transition={{ duration: 0.3 }}
                   className="flex items-center gap-4"
                 >
-                  <div className="text-4xl">{(currentDashboardVal as any)?.icon}</div>
+                  <div className="text-4xl">{(currentDashboard as any)?.icon}</div>
                   <div>
                     <h3 className="text-2xl font-bold text-white">
-                      {(currentDashboardVal as any)?.name || `Dashboard ${selectedDashboard + 1}`}
+                      {(currentDashboard as any)?.name || `Dashboard ${selectedDashboard + 1}`}
                     </h3>
                   </div>
                 </motion.div>
 
-                {/* Video */}
+                {/* Video Demo */}
                 {embed?.src ? (
                   <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black-200 border border-white/[0.1] backdrop-blur-sm group hover:border-purple/50 transition-all duration-300 shadow-lg hover:shadow-purple/20">
                     <motion.iframe
@@ -335,19 +324,19 @@ export default function ProjectCaseStudy() {
                 {/* Screenshots */}
                 {screenshots.length > 0 ? (
                   <div className="space-y-4">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-10 flex items-center gap-3">
-                      <span className="w-1 h-8 bg-purple rounded-full" />
-                      Screenshots
-                    </h2>
-
+                  <h2 className="text-3xl md:text-4xl font-bold mb-10 flex items-center gap-3">
+                    <span className="w-1 h-8 bg-purple rounded-full"></span>
+                    Screenshots
+                  </h2>
+                    {/* Title + hover action lives inside the image container */}
                     <div className="relative group">
                       <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black-200 border border-white/[0.1] backdrop-blur-sm transition-all duration-300 shadow-lg hover:shadow-purple/20">
+                        {/* top badges */}
                         <div className="absolute left-3 top-3 z-20">
                           <span className="px-3 py-1 text-xs font-semibold rounded-full bg-black/60 border border-white/15">
                             Screenshots
                           </span>
                         </div>
-
                         {canShowModal && (
                           <button
                             onClick={() => openModal(currentScreenshot)}
@@ -371,21 +360,21 @@ export default function ProjectCaseStudy() {
                       </div>
                     </div>
 
-                    <div className="flex gap-3 overflow-x-auto pb-2">
-                      {screenshots.map((s: string, index: number) => (
+                    <div className="mt-2 flex flex-wrap gap-3 justify-start max-w-[1100px]">
+                    {screenshots.map((s: string, index: number) => (
                         <motion.button
                           key={`${s}-${index}`}
                           onClick={() => setCurrentScreenshot(index)}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                          className={`w-24 h-20 md:w-28 md:h-24 rounded-lg overflow-hidden border-2 transition-all ${
                             currentScreenshot === index
                               ? "border-purple shadow-lg shadow-purple/50"
                               : "border-white/[0.1] hover:border-white/[0.3]"
                           }`}
                           title={`Screenshot ${index + 1}`}
                         >
-                          <img src={s} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                          <Image src={s} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                         </motion.button>
                       ))}
                     </div>
@@ -396,11 +385,11 @@ export default function ProjectCaseStudy() {
           </div>
         )}
 
-        {/* Gallery when no dashboards */}
-        {!hasDashboardsVal && screenshots.length > 0 ? (
+        {/* No dashboards but gallery exists */}
+        {!hasDashboards && screenshots.length > 0 ? (
           <div className="py-12 mb-8">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 flex items-center gap-3">
-              <span className="w-1 h-8 bg-purple rounded-full" />
+              <span className="w-1 h-8 bg-purple rounded-full"></span>
               Gallery
             </h2>
 
@@ -435,21 +424,21 @@ export default function ProjectCaseStudy() {
                 </div>
               </div>
 
-              <div className="flex gap-3 overflow-x-auto pb-2">
-                {screenshots.map((s, idx) => (
+              <div className="mt-2 flex flex-wrap gap-3 justify-start max-w-[1100px]">
+              {screenshots.map((s, idx) => (
                   <motion.button
                     key={`${s}-${idx}`}
                     onClick={() => setCurrentScreenshot(idx)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`w-24 h-20 md:w-28 md:h-24 rounded-lg overflow-hidden border-2 transition-all ${
                       currentScreenshot === idx
                         ? "border-purple shadow-lg shadow-purple/50"
                         : "border-white/[0.1] hover:border-white/[0.3]"
                     }`}
                     title={`Screenshot ${idx + 1}`}
                   >
-                    <img src={s} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    <Image src={s} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                   </motion.button>
                 ))}
               </div>
@@ -460,39 +449,35 @@ export default function ProjectCaseStudy() {
         {/* Case Study */}
         <div className="py-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-10 flex items-center gap-3">
-            <span className="w-1 h-8 bg-purple rounded-full" />
+            <span className="w-1 h-8 bg-purple rounded-full"></span>
             Case Study
           </h2>
 
           <div className="space-y-8">
-            {/* Research Publication */}
-            {(caseStudy as any).researchPublication ? (
+            {/* Research Publication FIRST (just above Industry) */}
+            {caseStudy.researchPublication ? (
               <div className="border border-purple/40 rounded-3xl p-8 md:p-10 bg-purple/10">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="px-3 py-1 text-xs font-semibold rounded-full bg-purple/30 border border-purple/50">
                     Research Publication
                   </span>
-                  {(caseStudy as any).researchPublication?.views ? (
+                  {caseStudy.researchPublication.views ? (
                     <span className="px-3 py-1 text-xs rounded-full bg-black-200 border border-white/10">
-                      {(caseStudy as any).researchPublication.views} views
+                      {caseStudy.researchPublication.views} views
                     </span>
                   ) : null}
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold mb-2">
-                  {(caseStudy as any).researchPublication.title}
-                </h3>
+                <h3 className="text-xl md:text-2xl font-bold mb-2">{caseStudy.researchPublication.title}</h3>
                 <p className="text-sm opacity-80 mb-3">
-                  {(caseStudy as any).researchPublication.conference}
+                  {caseStudy.researchPublication.conference}
                 </p>
                 <div className="text-sm mb-6">
-                  {(caseStudy as any).researchPublication.doi ? (
-                    <p className="mb-1">
-                      DOI: {(caseStudy as any).researchPublication.doi}
-                    </p>
+                  {caseStudy.researchPublication.doi ? (
+                    <p className="mb-1">DOI: {caseStudy.researchPublication.doi}</p>
                   ) : null}
-                  {(caseStudy as any).researchPublication.link ? (
+                  {caseStudy.researchPublication.link ? (
                     <a
-                      href={(caseStudy as any).researchPublication.link}
+                      href={caseStudy.researchPublication.link}
                       className="text-purple hover:underline"
                       target="_blank"
                       rel="noreferrer"
@@ -501,10 +486,10 @@ export default function ProjectCaseStudy() {
                     </a>
                   ) : null}
                 </div>
-                {Array.isArray((caseStudy as any).researchPublication.keyFindings) &&
-                (caseStudy as any).researchPublication.keyFindings.length > 0 ? (
+                {Array.isArray(caseStudy.researchPublication.keyFindings) &&
+                caseStudy.researchPublication.keyFindings.length > 0 ? (
                   <ul className="list-disc pl-5 space-y-1 text-sm">
-                    {(caseStudy as any).researchPublication.keyFindings.map((k: string, i: number) => (
+                    {caseStudy.researchPublication.keyFindings.map((k: string, i: number) => (
                       <li key={i}>{k}</li>
                     ))}
                   </ul>
@@ -513,7 +498,7 @@ export default function ProjectCaseStudy() {
             ) : null}
 
             {/* Industry */}
-            {(caseStudy as any).industry ? (
+            {caseStudy.industry ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("industry")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -538,13 +523,13 @@ export default function ProjectCaseStudy() {
                       Industry
                     </span>
                   </div>
-                  <Markdown>{(caseStudy as any).industry}</Markdown>
+                  <Markdown>{caseStudy.industry}</Markdown>
                 </div>
               </motion.div>
             ) : null}
 
             {/* Technologies */}
-            {Array.isArray((caseStudy as any).technologies) && (caseStudy as any).technologies.length > 0 ? (
+            {Array.isArray(caseStudy.technologies) && caseStudy.technologies.length > 0 ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("tech")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -566,7 +551,7 @@ export default function ProjectCaseStudy() {
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-8">Core Technologies</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {(caseStudy as any).technologies.map((tech: string, index: number) => (
+                    {caseStudy.technologies.map((tech: string, index: number) => (
                       <motion.div
                         key={`${tech}-${index}`}
                         whileHover={{ y: -4 }}
@@ -583,7 +568,7 @@ export default function ProjectCaseStudy() {
             ) : null}
 
             {/* Background */}
-            {(caseStudy as any).background ? (
+            {caseStudy.background ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("background")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -604,13 +589,13 @@ export default function ProjectCaseStudy() {
                 </AnimatePresence>
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6">Background</h3>
-                  <Markdown>{(caseStudy as any).background}</Markdown>
+                  <Markdown>{caseStudy.background}</Markdown>
                 </div>
               </motion.div>
             ) : null}
 
             {/* Challenge */}
-            {(caseStudy as any).challenge ? (
+            {caseStudy.challenge ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("challenge")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -631,13 +616,13 @@ export default function ProjectCaseStudy() {
                 </AnimatePresence>
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6">Challenge</h3>
-                  <Markdown>{(caseStudy as any).challenge}</Markdown>
+                  <Markdown>{caseStudy.challenge}</Markdown>
                 </div>
               </motion.div>
             ) : null}
 
             {/* Solution */}
-            {(caseStudy as any).solution ? (
+            {caseStudy.solution ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("solution")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -658,13 +643,13 @@ export default function ProjectCaseStudy() {
                 </AnimatePresence>
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6">Solution Delivered</h3>
-                  <Markdown>{(caseStudy as any).solution}</Markdown>
+                  <Markdown>{caseStudy.solution}</Markdown>
                 </div>
               </motion.div>
             ) : null}
 
             {/* Marketing */}
-            {(caseStudy as any).marketing ? (
+            {caseStudy.marketing ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("marketing")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -673,13 +658,13 @@ export default function ProjectCaseStudy() {
               >
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6">Go to Market</h3>
-                  <Markdown>{(caseStudy as any).marketing}</Markdown>
+                  <Markdown>{caseStudy.marketing}</Markdown>
                 </div>
               </motion.div>
             ) : null}
 
             {/* Conclusion */}
-            {(caseStudy as any).conclusion ? (
+            {caseStudy.conclusion ? (
               <motion.div
                 onMouseEnter={() => setHoveredCard("conclusion")}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -700,7 +685,7 @@ export default function ProjectCaseStudy() {
                 </AnimatePresence>
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-bold mb-6">Conclusion</h3>
-                  <Markdown>{(caseStudy as any).conclusion}</Markdown>
+                  <Markdown>{caseStudy.conclusion}</Markdown>
                 </div>
               </motion.div>
             ) : null}
@@ -716,13 +701,13 @@ export default function ProjectCaseStudy() {
           >
             <h3 className="text-3xl md:text-4xl font-bold mb-8">Interested in working together?</h3>
             <a href="mailto:mohamedigamane1203@gmail.com">
-              <MagicButton title="Get in touch" icon={<FaLocationArrow />} position="right" />
+            <MagicButton title="Get in touch" icon={<FaLocationArrow />} position="right" />
             </a>
           </motion.div>
         </div>
       </div>
 
-      <div className="h-20" />
+      <div className="h-20"></div>
 
       {/* Fullscreen Image Modal */}
       <AnimatePresence>
@@ -737,7 +722,7 @@ export default function ProjectCaseStudy() {
           >
             <div className="absolute inset-0" onClick={closeModal} />
             <div className="relative max-w-[95vw] max-h-[90vh] z-[101]">
-              <img
+              <Image
                 src={screenshots[modalIndex]}
                 alt={`Screenshot ${modalIndex + 1}`}
                 className="max-w-[95vw] max-h-[90vh] object-contain rounded-xl border border-white/10"
@@ -774,5 +759,5 @@ export default function ProjectCaseStudy() {
         ) : null}
       </AnimatePresence>
     </main>
-  );
+  )
 }
