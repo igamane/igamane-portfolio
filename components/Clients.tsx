@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import Image from "next/image";
 
 const shuffle = <T,>(arr: T[]) => {
   const a = arr.slice();
@@ -30,7 +31,7 @@ const Clients = () => {
           key={`${src}-${i}`}
           className="relative rounded-xl overflow-hidden border border-white/10 bg-black-200/40 p-3 flex items-center justify-center"
         >
-          <img
+          <Image
             src={src}
             alt={`Fiverr review ${i + 1}`}
             className="w-full h-auto object-contain"
@@ -50,7 +51,7 @@ const Clients = () => {
 
         <div className="mt-8">
           <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-black/40 to-black/20 p-3 overflow-hidden">
-            <img
+            <Image
               src="/github-contributions.png"
               alt="GitHub contributions heatmap"
               className="w-full h-auto rounded-xl border border-white/10"

@@ -4,6 +4,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import Link from "next/link";
 import { projects } from "@/data";
 import { PinContainer } from "./ui/Pin";
+import Image from "next/image";
 
 const RecentProjects = () => {
   return (
@@ -21,8 +22,8 @@ const RecentProjects = () => {
               <Link href={item.link} className="block">
                 <PinContainer title="" href={item.link}>
                   <div className="relative flex items-center justify-center w-full overflow-hidden rounded-2xl mb-6 aspect-video bg-[#13162D]">
-                    <img src="/bg.png" alt="bgimg" className="w-full h-full object-cover" />
-                    <img src={cover} alt="cover" className="z-10 absolute bottom-0 w-full h-full object-cover" />
+                    <Image src="/bg.png" alt="bgimg" className="w-full h-full object-cover" />
+                    <Image src={cover} alt="cover" className="z-10 absolute bottom-0 w-full h-full object-cover" />
                   </div>
 
                   <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">

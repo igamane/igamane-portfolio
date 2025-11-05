@@ -11,6 +11,7 @@ import { CanvasRevealEffect } from "@/components/ui/CanvasRevealEffect"
 import { AnimatePresence, motion } from "framer-motion"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Markdown from "@/components/Markdown"
+import Image from "next/image";
 
 type Maybe<T> = T | undefined | null
 
@@ -373,7 +374,7 @@ export default function ProjectCaseStudy() {
                           }`}
                           title={`Screenshot ${index + 1}`}
                         >
-                          <img src={s} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                          <Image src={s} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
                         </motion.button>
                       ))}
                     </div>
@@ -437,7 +438,7 @@ export default function ProjectCaseStudy() {
                     }`}
                     title={`Screenshot ${idx + 1}`}
                   >
-                    <img src={s} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    <Image src={s} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                   </motion.button>
                 ))}
               </div>
@@ -721,7 +722,7 @@ export default function ProjectCaseStudy() {
           >
             <div className="absolute inset-0" onClick={closeModal} />
             <div className="relative max-w-[95vw] max-h-[90vh] z-[101]">
-              <img
+              <Image
                 src={screenshots[modalIndex]}
                 alt={`Screenshot ${modalIndex + 1}`}
                 className="max-w-[95vw] max-h-[90vh] object-contain rounded-xl border border-white/10"

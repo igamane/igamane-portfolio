@@ -2,6 +2,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
 import { TextGenerateEffect } from "./ui/TextGenerateEffect";
+import Image from "next/image";
 
 const PROFILE_SRC = "/profile.jpg"; // place your image at /public/profile.jpg
 
@@ -52,7 +53,7 @@ const Hero = () => {
           {/* Right: circular avatar */}
           <div className="md:mt-0">
             <div className="relative w-36 h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border border-white/10 shadow-2xl">
-              <img
+              <Image
                 src={PROFILE_SRC}
                 alt="Mohamed Igamane profile"
                 className="w-full h-full object-cover"
