@@ -55,6 +55,7 @@ const Hero = () => {
             <div className="relative w-36 h-36 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border border-white/10 shadow-2xl">
               <Image
                 src={PROFILE_SRC}
+                fill
                 alt="Mohamed Igamane profile"
                 className="w-full h-full object-cover"
               />

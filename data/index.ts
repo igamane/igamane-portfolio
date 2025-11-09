@@ -76,7 +76,7 @@ export const projects = [
     "title": "TunePact - AI-Powered Music Career Platform with Affiliate System",
     "des": "A comprehensive SaaS platform empowering independent musicians with AI-driven marketing, fan engagement, and monetization tools, plus a robust affiliate program for music influencers to earn recurring commissions.",
     "img": "/tunepact-hero.svg",
-    "iconLists": ["/next.svg", "/ts.svg", "/mongodb.svg", "/stripe.svg", "/openai.svg", "/aws.svg"],
+    "iconLists": ["/next.svg", "/ts.svg", "/react.png", "/tailwind.png", "/mongodb.svg", "/stripe.png", "/openai.png", "/aws.png"],
     "link": "/projects/1",
     "caseStudy": {
       "industry": "Music Technology & Creator Economy",
@@ -127,7 +127,7 @@ export const projects = [
     "title": "Labas AI - Intelligent Hospital & Patient Management System",
     "des": "Implemented AI patient intake system for iOS and Android platforms with automated symptom summarization, doctor task assignment workflows, QR-code patient lookup functionality, and auto-generated PDF visit reports. Streamlined pre-consultation triage processes and enhanced cross-department patient handoff procedures through a mobile-first design to improve hospital efficiency.",
     "img": "/labas-ai.png",
-    "iconLists": ["/react-native.svg", "/expo.svg", "/typescript.svg", "/nodejs.svg", "/openai.svg", "/mongodb.svg"],
+    "iconLists": ["/react-native.png", "/expo.png", "/ts.svg", "/nodejs.svg", "/openai.png", "/mongodb.svg"],
     "link": "/projects/2",
     "caseStudy": {
       "industry": "Healthcare & Hospital Automation",
@@ -176,7 +176,7 @@ export const projects = [
     "title": "Blood Test AI Mobile App (IOS & Android)",
     "des": "AI-powered mobile health platform that analyzes blood test results and provides personalized diet, exercise, and medication recommendations for iOS and Android.",
     "img": "/blood-test-ai.png",
-    "iconLists": ["/react-native.svg", "/expo.svg", "/typescript.svg", "/openai.svg", "/mongodb.svg", "/nodejs.svg"],
+    "iconLists": ["/react-native.png", "/expo.png", "/ts.svg", "/openai.png", "/mongodb.svg", "/nodejs.svg"],
     "link": "/projects/3",
     "caseStudy": {
       "industry": "Healthcare & Wellness Technology",
@@ -216,7 +216,7 @@ export const projects = [
     "title": "Emti7ani - Morocco Exam Preparation Platform",
     "des": "Founded and launched Morocco-focused exam preparation platform serving 6,000+ students with realistic exam simulations, competitive leaderboards, and comprehensive affiliate management system.",
     "img": "/emtihani-preview.svg",
-    "iconLists": ["/nodejs.svg", "/express.svg", "/mongodb.svg", "/cloudinary.svg", "/passport.svg"],
+    "iconLists": ["/nodejs.svg", "/express.png", "/mongodb.svg", "/cloudinary.png", "/html.png", "/css.png", "/javascript.png"],
     "link": "/projects/6",
     "caseStudy": {
       "industry": "Education Technology (EdTech)",
@@ -276,7 +276,7 @@ export const projects = [
     "title": "AI-Based Voice Agent for Automated Sales Calls",
     "des": "AI voice agent platform built as part of an IEEE-published research project on conversational AI and sales automation, demonstrating real-world application of NLP, speech processing, and telephony integration.",
     "img": "/igamane-ai.svg",
-    "iconLists": ["/next.svg", "/ts.svg", "/mongodb.svg", "/tailwind.svg", "/openai.svg"],
+    "iconLists": ["/next.svg", "/ts.svg", "/react.png", "/mongodb.svg", "/tailwind.png", "/openai.png"],
     "link": "/projects/1",
     "caseStudy": {
       "industry": "Sales Automation & AI Research",
@@ -332,7 +332,7 @@ export const projects = [
     "title": "POD University - AI SAAS Platform for Print-on-Demand Sellers",
     "des": "Comprehensive AI toolkit for ShineOn sellers featuring image generation, market research, ad strategy, and automated content creation - serving 2,000+ active users.",
     "img": "/pod-university.svg",
-    "iconLists": ["/node.svg", "/express.svg", "/mongodb.svg", "/openai.svg", "/stripe.svg", "/aws.svg"],
+    "iconLists": ["/nodejs.svg", "/express.png", "/mongodb.svg", "/openai.png", "/stripe.png", "/aws.png", "/html.png", "/css.png", "/javascript.png"],
     "link": "/projects/4",
     "caseStudy": {
       "industry": "E-commerce SaaS / Print-on-Demand",
@@ -370,7 +370,7 @@ export const projects = [
     "title": "Buzzify AI - Personal Brand Assistant for LinkedIn/X",
     "des": "AI-powered platform that automates industry news curation and generates personalized social media content for thought leadership on LinkedIn and X (Twitter).",
     "img": "/buzzify-preview.svg",
-    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/openai.svg", "/stripe.svg", "/mongodb.svg", "/node.svg"],
+    "iconLists": ["/next.svg", "/react.png", "/tail.svg", "/ts.svg", "/openai.png", "/stripe.png", "/mongodb.svg", "/nodejs.svg"],
     "link": "/projects/5",
     "caseStudy": {
       "industry": "SaaS & Social Media Marketing",
@@ -419,7 +419,7 @@ export const projects = [
     "title": "AI Activity Program Planner",
     "description": "Enterprise-grade AI-powered activity planning platform for aged care facilities with comprehensive user management, community engagement, and administrative tools.",
     "img": "/projects/activity-program.svg",
-    "iconLists": ["/next.svg", "/react.svg", "/ts.svg", "/tailwind.svg", "/framer.svg", "/openai.svg"],
+    "iconLists": ["/next.svg", "/react.png", "/ts.svg", "/tailwind.png", "/openai.png", "/maps.png"],
     "link": "/projects/7",
     "caseStudy": {
       "industry": "Healthcare & Aged Care Technology - SaaS Platform",
@@ -428,7 +428,6 @@ export const projects = [
         "Next.js 16 (App Router)",
         "React 19 with TypeScript",
         "Tailwind CSS",
-        "Framer Motion",
         "shadcn/ui Components",
         "React Hook Form",
         "Zod Validation",
@@ -469,7 +468,7 @@ export const projects = [
     "title": "OAM AI - AI-Powered WhatsApp Concierge for Property Management",
     "des": "An intelligent WhatsApp and SMS concierge system that automates guest check-in/out, amenity assistance, and provides personalized local recommendations for vacation rental properties.",
     "img": "/oam-ai-preview.svg",
-    "iconLists": ["/node.svg", "/express.svg", "/mongodb.svg", "/openai.svg", "/aws.svg", "/whatsapp.svg"],
+    "iconLists": ["/nodejs.svg", "/express.png", "/mongodb.svg", "/aws.png", "/openai.png", "/whatsapp.png", "/html.png", "/css.png", "/javascript.png"],
     "link": "/projects/8",
     "caseStudy": {
       "industry": "Hospitality & Property Management",
@@ -508,7 +507,7 @@ export const projects = [
     "title": "AI Proposal Generator SaaS",
     "des": "Automate business proposal creation with AI-powered document generation. Streamline the proposal process by combining RFP analysis with customizable templates and multi-step AI agents.",
     "img": "/proposal-generator.svg",
-    "iconLists": ["/next.svg", "/ts.svg", "/tail.svg", "/framer.svg", "/ai.svg"],
+    "iconLists": ["/next.svg", "/react.png", "/ts.svg", "/tail.svg", "/openai.png"],
     "link": "/projects/9",
     "caseStudy": {
       "industry": "Enterprise Software & Business Automation",
@@ -547,7 +546,7 @@ export const projects = [
     "title": "ChatBotYard - AI Chatbot Builder",
     "des": "A no-code AI chatbot builder enabling businesses to create, train, customize, and deploy intelligent conversational agents across their websites with AI-generated avatars.",
     "img": "/projects/chatbotyard.svg",
-    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/framer.svg", "/openai.svg", "/flux.svg"],
+    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/react.png", "/openai.png"],
     "link": "/projects/10",
     "caseStudy": {
       "industry": "SaaS & AI Automation | Customer Service & Engagement",
@@ -582,7 +581,7 @@ export const projects = [
     "title": "カテキョ365 - AI Japanese Tutoring SAAS Platform",
     "des": "A comprehensive AI tutoring SaaS platform built for Japanese students, featuring multi-modal learning with text, images, and PDF reference materials.",
     "img": "/projects/katekyo365-hero.svg",
-    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/openai.svg", "/firebase.svg", "/stripe.svg"],
+    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/openai.png", "/firebase.png", "/stripe.png"],
     "link": "/projects/12",
     "caseStudy": {
       "industry": "Education Technology (EdTech)",
@@ -628,7 +627,7 @@ export const projects = [
     "title": "BearisterAI - AI Legal SAAS Platform",
     "des": "A comprehensive SaaS platform providing AI-powered legal assistance for attorneys and law students with subscription-based access to specialized legal research tools.",
     "img": "/bearisterai.svg",
-    "iconLists": ["/next.svg", "/typescript.svg", "/mongodb.svg", "/openai.svg", "/stripe.svg"],
+    "iconLists": ["/next.svg", "/ts.svg", "/mongodb.svg", "/openai.png", "/stripe.png"],
     "link": "/projects/13",
     "caseStudy": {
       "industry": "Legal Technology & AI-Powered SaaS",
@@ -674,7 +673,7 @@ export const projects = [
     "title": "AI ATS Resume Generator",
     "des": "An intelligent resume generation platform that transforms Arabic user input into professional, ATS-compliant resumes using GPT-4, serving job seekers in Saudi Arabia.",
     "img": "/ATS_Resume_3c1b048b_page1.png",
-    "iconLists": ["/nodejs.svg", "/express.svg", "/mongodb.svg", "/openai.svg", "/javascript.svg"],
+    "iconLists": ["/nodejs.svg", "/express.png", "/mongodb.svg", "/openai.png", "/html.png", "/css.png", "/javascript.png"],
     "link": "/projects/14",
     "caseStudy": {
       "industry": "HR Technology & Career Services",
@@ -713,7 +712,7 @@ export const projects = [
     "title": "TeamFirst - Blockchain-Powered Football Club Donations",
     "des": "A transparent donation platform connecting African football fans with their favorite clubs using Hedera blockchain technology.",
     "img": "/logo.png",
-    "iconLists": ["/next.svg", "/tail.svg", "/ts.svg", "/react.svg", "/mongodb.svg"],
+    "iconLists": ["/hedera.png", "/metamask.png", "/next.svg", "/tail.svg", "/ts.svg", "/react.png", "/mongodb.svg"],
     "link": "/projects/15",
     "caseStudy": {
       "industry": "Blockchain & Sports Technology",
@@ -750,7 +749,7 @@ export const projects = [
     "title": "AI Automated Blog for E-Commerce",
     "des": "A complete AI-driven automation that posts daily SEO-optimized articles with AI-generated images directly to Shopify and WordPress blogs, boosting organic traffic for e-commerce stores worldwide.",
     "img": "/projects/ai-blog-automation.svg",
-    "iconLists": ["/node.svg", "/openai.svg", "/shopify.svg", "/wordpress.svg", "/cron.svg"],
+    "iconLists": ["/nodejs.svg", "/openai.png", "/shopify.png", "/wordpress.png"],
     "link": "/projects/16",
     "caseStudy": {
       "industry": "E-Commerce Automation & Content Marketing",
@@ -788,7 +787,7 @@ export const projects = [
     "title": "Jarvis AI for Trello - Voice-Enabled Project Management Assistant",
     "des": "An intelligent voice-activated AI assistant that seamlessly integrates with Trello, enabling hands-free project management through natural language commands.",
     "img": "/jarvis-trello.svg",
-    "iconLists": ["/nodejs.svg", "/openai.svg", "/trello.svg", "/express.svg", "/whisper.svg"],
+    "iconLists": ["/nodejs.svg", "/openai.png", "/trello.png", "/express.png"],
     "link": "/projects/17",
     "caseStudy": {
       "industry": "Productivity & Project Management",
