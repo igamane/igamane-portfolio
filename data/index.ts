@@ -370,7 +370,7 @@ export const projects = [
     "title": "Buzzify AI - Personal Brand Assistant for LinkedIn/X",
     "des": "AI-powered platform that automates industry news curation and generates personalized social media content for thought leadership on LinkedIn and X (Twitter).",
     "img": "/buzzify-preview.svg",
-    "iconLists": ["/next.svg", "/react.png", "/tail.svg", "/ts.svg", "/openai.png", "/stripe.png", "/mongodb.svg", "/nodejs.svg"],
+    "iconLists": ["/next.svg", "/react.png", "/tail.svg", "/ts.svg", "/openai.png", "/linkedin.png", "/x.png", "/stripe.png", "/mongodb.svg", "/nodejs.svg"],
     "link": "/projects/5",
     "caseStudy": {
       "industry": "SaaS & Social Media Marketing",
