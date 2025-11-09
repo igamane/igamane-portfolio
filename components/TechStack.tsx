@@ -24,7 +24,7 @@ const apisAndServices = [
   { src: "/aws.png", label: "AWS" },
   { src: "/googleCloud.png", label: "Google Cloud" },
   { src: "/whatsapp.png", label: "WhatsApp Cloud API" },
-  { src: "/whatsapp.png", label: "LinkedIn API" },
+  { src: "/linkedin.png", label: "LinkedIn API" },
   { src: "/x.png", label: "X API" },
   { src: "/facebook.png", label: "Facebook API" },
   { src: "/instagram.png", label: "Instagram API" },
