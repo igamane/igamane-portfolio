@@ -277,7 +277,7 @@ export const projects = [
     "des": "AI voice agent platform built as part of an IEEE-published research project on conversational AI and sales automation, demonstrating real-world application of NLP, speech processing, and telephony integration.",
     "img": "/igamane-ai.svg",
     "iconLists": ["/next.svg", "/ts.svg", "/react.png", "/mongodb.svg", "/tailwind.png", "/openai.png"],
-    "link": "/projects/1",
+    "link": "/projects/11",
     "caseStudy": {
       "industry": "Sales Automation & AI Research",
   
